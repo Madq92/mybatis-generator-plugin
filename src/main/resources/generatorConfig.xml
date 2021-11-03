@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <classPathEntry location="src/main/resources/lib/mysql-connector-java-5.1.47.jar"/>
+    <context id="mysqlgenerator" targetRuntime="MyBatis3" defaultModelType="flat">
+        <property name="autoDelimitKeywords" value="true"/>
+        <!--可以使用``包括字段名，避免字段名与sql保留字冲突报错-->
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <plugin type="cc.mikaka.mybatis.generator.plugin.SelectByLogicIdAndTenantIdPlugin"/>
+        <plugin type="cc.mikaka.mybatis.generator.plugin.UpdateByLogicIdAndTenantIdSelectivePlugin"/>
+        <commentGenerator type="cc.mikaka.mybatis.generator.plugin.CustomCommentGenerator"/>
+
+        <!--数据库连接信息-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/calm_goods?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true&amp;useSSL=false"
+                        userId="root"
+                        password="123456"/>
+
+        <javaTypeResolver type="cc.mikaka.mybatis.generator.plugin.JavaTypeResolver"/>
+
+
+        <javaModelGenerator targetPackage="cc.mikaka.calm.goods.entity"
+                            targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+            <property name="rootClass" value="cc.mikaka.calm.goods.entity.BaseEntity"/>
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="cc.mikaka.calm.goods.repository" targetProject="src/main/resources"/>
+        <javaClientGenerator type="XMLMAPPER" targetPackage="cc.mikaka.calm.goods.repository"
+                             targetProject="src/main/java"/>
+
+        <table tableName="dict_detail">
+            <property name="tableTenantId" value="tenant_id"/>
+            <property name="tableLogicId" value="detail_id"/>
+        </table>
+    </context>
+</generatorConfiguration>
